@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audit RC prints 2026</title>
+<meta name="description" content="Audit e-shopu shop.rcprints.ch a prepojenia s webom rcprints.ch – nálezy, priority a plán opráv, vysvetlené pre ľudí mimo e-commerce.">
+<style>
+:root{--bg:#0f1418;--bg2:#161d23;--card:#1c252d;--line:#2a3640;--txt:#e6ebef;--mut:#9aa8b4;--acc:#c9a26b;--red:#d9534f;--ora:#e8a33d;--yel:#d8c24a;--grn:#5fb37a;--blu:#5b9bd5;--vio:#9b7bd6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--acc)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(15,20,24,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+nav.top .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;white-space:nowrap}
+nav.top a{color:var(--mut);text-decoration:none;font-size:13px;padding:6px 10px;border-radius:6px}
+nav.top a:hover{background:var(--bg2);color:var(--txt)}
+header.cover{padding:56px 0 40px;border-bottom:1px solid var(--line);background:radial-gradient(1200px 400px at 20% -10%,#26323b,transparent)}
+header.cover h1{font-size:34px;margin:0 0 8px;font-weight:600}
+header.cover .sub{color:var(--mut);font-size:15px}
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:28px}
+.score{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.score .big{font-size:44px;font-weight:700;line-height:1}
+.score .big small{font-size:16px;color:var(--mut);font-weight:400}
+.score .lbl{color:var(--mut);font-size:13px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.score .meaning{font-size:13px;color:var(--mut);margin-top:8px}
+section{padding:48px 0;border-bottom:1px solid var(--line)}
+h2{font-size:26px;margin:0 0 6px;font-weight:600}
+h3{font-size:18px;margin:26px 0 8px;font-weight:600}
+.lead{color:var(--mut);margin:0 0 18px}
+p{margin:0 0 12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.box h4{margin:0 0 8px;font-size:15px}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut);margin-right:4px;vertical-align:middle}
+.sev-crit{background:#3a1c1c;color:#ff9b98;border-color:#6a2c2c}.sev-high{background:#3a2a14;color:#ffc36b;border-color:#6a4a20}.sev-med{background:#35321a;color:#e8dc74;border-color:#5e5924}.sev-low{background:#1d3324;color:#8fd6a5;border-color:#2a5a37}.sev-quick{background:#1c2c3d;color:#8cc4ff;border-color:#2a4a66}.sev-ok{background:#1d3324;color:#8fd6a5;border-color:#2a5a37}
+dfn{font-style:normal;border-bottom:1px dotted var(--acc);cursor:help}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:190px 1fr 46px;align-items:center;gap:10px;font-size:14px}
+.bar .track{height:12px;background:#0b0f12;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.bar .fill{height:100%;border-radius:6px}
+.donuts{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between}
+.donut{text-align:center;width:150px}
+.donut svg{width:110px;height:110px}
+.donut .n{font-size:13px;color:var(--mut)}
+.matrix{position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:10px;min-height:420px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.q h4{margin:0 0 8px;font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.q span{display:block;font-size:13px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.q.hot{border-color:#6a2c2c;background:#2a1a1a}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.filters button{background:var(--bg2);border:1px solid var(--line);color:var(--txt);padding:6px 12px;border-radius:999px;font-size:13px;cursor:pointer}
+.filters button.on{background:var(--acc);color:#111;border-color:var(--acc)}
+.cards{display:grid;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;border-left:5px solid var(--line)}
+.card.c-crit{border-left-color:var(--red)}.card.c-high{border-left-color:var(--ora)}.card.c-med{border-left-color:var(--yel)}.card.c-low{border-left-color:var(--grn)}.card.c-quick{border-left-color:var(--blu)}
+.card h4{margin:0 0 6px;font-size:16px}
+.card .meta{font-size:12px;color:var(--mut);margin-bottom:8px}
+.card .row{display:grid;grid-template-columns:120px 1fr;gap:8px;font-size:14px;padding:5px 0;border-top:1px dashed var(--line)}
+.card .row b{color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.card code,.small code{background:#0b0f12;padding:1px 5px;border-radius:4px;font-size:12px;color:#c7d3dd}
+ol.top10{padding-left:22px}ol.top10 li{margin-bottom:10px}
+.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;margin-top:18px}
+.timeline:before{content:"";position:absolute;left:0;right:0;top:22px;height:2px;background:var(--line)}
+.tl{padding:0 12px}.tl .dot{width:14px;height:14px;border-radius:50%;background:var(--acc);border:3px solid var(--bg);position:relative;top:15px;margin-bottom:22px}
+.tl h4{margin:0 0 8px}.tl ul{padding-left:18px;font-size:14px;margin:0}.tl li{margin-bottom:6px}
+@media(max-width:760px){.timeline{grid-template-columns:1fr}.timeline:before{display:none}.bar{grid-template-columns:120px 1fr 40px}}
+.small{font-size:13px;color:var(--mut)}
+.story p{font-size:17px;line-height:1.7}
+.kpi{display:flex;flex-wrap:wrap;gap:10px}
+.kpi div{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:13px}
+.kpi b{display:block;font-size:20px}
+.glos dt{font-weight:600;margin-top:10px}.glos dd{margin:2px 0 0;color:var(--mut);font-size:14px}
+.print-hint{font-size:12px;color:var(--mut);margin-top:10px}
+svg text{font-family:inherit}
+@media print{nav.top,.filters{display:none}body{background:#fff;color:#111}.box,.card,.score,.q{background:#fff;border-color:#bbb;color:#111}section{page-break-inside:avoid}a{color:#333}.small,.lead,.card .meta,.score .lbl{color:#444}}
+</style>
+</head>
+<body>
+<nav class="top"><div class="wrap">
+<a href="#prehlad">Prehľad</a><a href="#ako-citat">Ako to čítať</a><a href="#skore">Skóre</a><a href="#cesta">Cesta zákazníka</a><a href="#shopify">Shopify</a><a href="#web">Web</a><a href="#prepojenie">Prepojenie</a><a href="#nalezy">Nálezy</a><a href="#oprava">Ako to opraviť</a><a href="#plan">Plán 30/60/90</a><a href="#prilohy">Prílohy</a>
+</div></nav>
+
+<header class="cover"><div class="wrap">
+<div class="small">AUDIT E-SHOPU A WEBU · 25. 9. 2026 · verzia 1</div>
+<h1>RC prints – ako obchod pôsobí na zákazníka a čo ho stojí peniaze</h1>
+<div class="sub">Shopify obchod: <a href="https://shop.rcprints.ch">https://shop.rcprints.ch</a> &nbsp;·&nbsp; Marketingový web: <a href="https://www.rcprints.ch">https://www.rcprints.ch</a> (z prostredia auditu nedostupný, pozri sekciu Web)</div>
+<div class="scores">
+ <div class="score"><div class="lbl">Shopify obchod</div><div class="big">65<small>/100</small></div><div class="meaning">Pevný základ (texty, právne stránky, preklady), ale 2 chyby, ktoré priamo blokujú nákup, a slabé dôkazy dôvery.</div></div>
+ <div class="score"><div class="lbl">Marketingový web</div><div class="big">—<small> neauditované</small></div><div class="meaning">Doména rcprints.ch existuje (DNS na Cloudflare), ale sieťová politika prostredia ju zablokovala. Nič som nevymýšľal.</div></div>
+ <div class="score"><div class="lbl">Celý systém (predbežne)</div><div class="big">62<small>/100</small></div><div class="meaning">Skóre obchodu mínus 3 body za neoverené prepojenie web → obchod. Po sprístupnení webu doplním.</div></div>
+</div>
+<div class="print-hint">Tip: tento súbor funguje offline. Uložiť ako PDF: Ctrl/Cmd + P → „Uložiť ako PDF“.</div>
+</div></header>
+
+<section id="prehlad"><div class="wrap story">
+<h2>1. Príbeh prvej návštevy</h2>
+<p class="lead">Čo cíti človek, ktorý príde na shop.rcprints.ch prvýkrát, napríklad z Instagramu.</p>
+<p>Príde na peknú, pokojnú stránku. Hneď rozumie, že ide o linoryty z Bernu tlačené ručne, ceny v CHF, doprava po Švajčiarsku. To je silný začiatok, väčšina malých obchodov to nemá.</p>
+<p>Po šiestich sekundách mu cez celú obrazovku vyskočí okno „10 % auf deine erste Bestellung“. Stane sa to na každej stránke, aj v košíku, aj na stránke 404. Ak ho zavrie, sedem dní má pokoj, ale prvý dojem je „chcú môj e-mail skôr, než som niečo videl“.</p>
+<p>Hlavné tlačidlo v hero sekcii ho pošle na originály od CHF 249. Lacnejší vstup (malé formáty za CHF 20, pohľadnice) nájde až nižšie. Kto prišiel „len pozrieť“, nemá jasný lacný prvý krok.</p>
+<p>Otvorí originál za CHF 390. Text je výborný a poctivý: papier, náklad, podpis, certifikát, čo sa stane pri poškodení. Ale je tam jediná fotografia, 1080 px, a žiadne hodnotenia ani fotky od zákazníkov. Pri cene 390 frankov chce vidieť detail tlače, rám zboku, rozmer na stene.</p>
+<p>Klikne na darčekový poukaz. Vyberie „Gedruckte Karte per Post · CHF 3 Versand“ a dostane stránku 404. Produkt tlačenej karty je v Shopify ako koncept (draft), nie je zverejnený. Tu obchod stráca reálnu objednávku.</p>
+<p>V hero texte číta „Zahlung mit TWINT oder Karte“. V pätičke medzi ikonami platieb TWINT nie je. Ak TWINT v pokladni naozaj chýba, Švajčiar to vníma ako nedodržaný sľub.</p>
+<p>Dá si do košíka len pohľadnice za CHF 24. V pokladni vidí dve možnosti dopravy: CHF 5 a CHF 12. Nechápe, prečo, a niekto omylom zaplatí 12.</p>
+<p>Napriek tomu: právne stránky sú kompletné a ľudsky napísané, anglický preklad je úplný bez nemeckých zvyškov, každá fotografia má alt text v oboch jazykoch, štruktúrované dáta pre Google sú správne. Základ je zdravý. Chýba dôvera od iných ľudí, rýchlosť a dve-tri opravy v pokladni.</p>
+</div></section>
+
+<section id="ako-citat"><div class="wrap">
+<h2>2. Ako čítať tento dokument</h2>
+<p class="lead">Používam prirovnanie: obchod je fyzická predajňa.</p>
+<div class="grid3">
+ <div class="box"><h4>Kolekcia = regál / ulička</h4><p class="small">Stránka so zoznamom produktov jedného druhu, napríklad „Alle Werke“. Zákazník ňou prechádza a vyberá.</p></div>
+ <div class="box"><h4>PDP = kartička na regáli</h4><p class="small"><dfn title="Product Detail Page">PDP</dfn> je stránka jedného produktu: fotky, cena, varianty, tlačidlo „In den Warenkorb legen“.</p></div>
+ <div class="box"><h4>Checkout = pokladňa</h4><p class="small">Stránky Shopify, kde sa zadáva adresa, doprava a platba. Tému obchodu tu nemeníte, len nastavenia.</p></div>
+ <div class="box"><h4>Téma (theme)</h4><p class="small">Vzhľad obchodu. RC prints má vlastnú tému „rcprints-theme-v90“ postavenú na Shopify Dawn. Upravuje sa v Shopify admin → Online Store → Themes → Customize.</p></div>
+ <div class="box"><h4>App embed / aplikácia</h4><p class="small">Doplnok tretej strany (napr. Gelato na tlač na objednávku). Každá app môže pridať skripty a spomaliť stránku.</p></div>
+ <div class="box"><h4>Pixel / consent</h4><p class="small">Pixel je merací skript (Google). Consent je súhlas s cookies. Shopify to rieši cez „Customer privacy“ nastavenia.</p></div>
+</div>
+<h3>Závažnosť a označenia</h3>
+<p class="small"><span class="tag sev-crit">Critical</span> blokuje nákup alebo klame · <span class="tag sev-high">High</span> stojí objednávky alebo dôveru každý deň · <span class="tag sev-med">Medium</span> zhoršuje výsledok, oprava sa oplatí · <span class="tag sev-low">Low</span> kozmetika · <span class="tag sev-quick">Quick win</span> hotové do hodiny. Effort S = do 2 hodín, M = deň až dva, L = viac dní. <b>ZMERANÉ</b> = overené príkazom alebo dotazom, <b>POSÚDENÉ</b> = môj odborný úsudok.</p>
+<p class="small">Merania: 25. 9. 2026, 13:40 až 14:05 bernského času. Stiahnutých 60 stránok HTML, 26 stránok vykreslených v Chromium (mobil 390 px a desktop 1440 px), 187 aktívnych produktov cez Shopify Admin API, 4 skúšobné košíky s výpočtom dopravy. Laboratórne časy sú z USA cez proxy, reálne hodnoty vo Švajčiarsku budú o niečo lepšie.</p>
+</div></section>
+
+<section id="skore"><div class="wrap">
+<h2>3. Skóre</h2>
+<p class="lead">Rovnaké váhy pre obchod aj web. Web je bez skóre, lebo som ho nevidel.</p>
+<div class="grid2">
+<div class="box">
+<h4>Shopify obchod – 65 / 100 (POSÚDENÉ na základe ZMERANÝCH faktov)</h4>
+<div class="bars">
+ <div class="bar"><span>Jasnosť ponuky (15)</span><div class="track"><div class="fill" style="width:80%;background:var(--grn)"></div></div><span>12</span></div>
+ <div class="bar"><span>Dôvera (15)</span><div class="track"><div class="fill" style="width:53%;background:var(--ora)"></div></div><span>8</span></div>
+ <div class="bar"><span>Nájditeľnosť / IA / SEO (15)</span><div class="track"><div class="fill" style="width:67%;background:var(--yel)"></div></div><span>10</span></div>
+ <div class="bar"><span>PDP / obsah (15)</span><div class="track"><div class="fill" style="width:67%;background:var(--yel)"></div></div><span>10</span></div>
+ <div class="bar"><span>Mobil (10)</span><div class="track"><div class="fill" style="width:60%;background:var(--yel)"></div></div><span>6</span></div>
+ <div class="bar"><span>Dojem rýchlosti (10)</span><div class="track"><div class="fill" style="width:50%;background:var(--ora)"></div></div><span>5</span></div>
+ <div class="bar"><span>Pokladňa / kontakt (10)</span><div class="track"><div class="fill" style="width:60%;background:var(--yel)"></div></div><span>6</span></div>
+ <div class="bar"><span>Právne veci a hygiena (5)</span><div class="track"><div class="fill" style="width:80%;background:var(--grn)"></div></div><span>4</span></div>
+ <div class="bar"><span>Súlad web ↔ obchod (5)</span><div class="track"><div class="fill" style="width:60%;background:var(--yel)"></div></div><span>3</span></div>
+</div>
+<p class="small" style="margin-top:12px">Čo to znamená: obchod dnes stráca objednávky hlavne na 4 miestach – nedostupná tlačená darčeková karta, nejasná doprava pri pohľadniciach, pop-up na každej stránke a chýbajúce dôkazy dôvery pri drahých originálnych listoch. Rýchlosť je priemerná (3,1 MB na mobile), nie katastrofa.</p>
+</div>
+<div class="box">
+<h4>Šesť dojmov na jeden pohľad</h4>
+<div class="donuts">
+ <div class="donut"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#0b0f12" stroke-width="5"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#5fb37a" stroke-width="5" stroke-dasharray="80 20" stroke-dashoffset="25" stroke-linecap="round"/><text x="21" y="24" text-anchor="middle" font-size="9" fill="#e6ebef">80</text></svg><div class="n">Jasnosť ponuky</div></div>
+ <div class="donut"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#0b0f12" stroke-width="5"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#e8a33d" stroke-width="5" stroke-dasharray="50 50" stroke-dashoffset="25" stroke-linecap="round"/><text x="21" y="24" text-anchor="middle" font-size="9" fill="#e6ebef">50</text></svg><div class="n">Dôvera</div></div>
+ <div class="donut"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#0b0f12" stroke-width="5"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#e8a33d" stroke-width="5" stroke-dasharray="45 55" stroke-dashoffset="25" stroke-linecap="round"/><text x="21" y="24" text-anchor="middle" font-size="9" fill="#e6ebef">45</text></svg><div class="n">Dojem rýchlosti</div></div>
+ <div class="donut"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#0b0f12" stroke-width="5"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#d8c24a" stroke-width="5" stroke-dasharray="60 40" stroke-dashoffset="25" stroke-linecap="round"/><text x="21" y="24" text-anchor="middle" font-size="9" fill="#e6ebef">60</text></svg><div class="n">Ľahkosť na mobile</div></div>
+ <div class="donut"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#0b0f12" stroke-width="5"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#d8c24a" stroke-width="5" stroke-dasharray="65 35" stroke-dashoffset="25" stroke-linecap="round"/><text x="21" y="24" text-anchor="middle" font-size="9" fill="#e6ebef">65</text></svg><div class="n">SEO hygiena</div></div>
+ <div class="donut"><svg viewBox="0 0 42 42"><circle cx="21" cy="21" r="15.9" fill="none" stroke="#0b0f12" stroke-width="5"/><circle cx="21" cy="21" r="15.9" fill="none" stroke="#d8c24a" stroke-width="5" stroke-dasharray="60 40" stroke-dashoffset="25" stroke-linecap="round"/><text x="21" y="24" text-anchor="middle" font-size="9" fill="#e6ebef">60</text></svg><div class="n">Pripravenosť pokladne</div></div>
+</div>
+<div class="kpi" style="margin-top:14px">
+ <div><b>231</b>požiadaviek, domovská stránka</div><div><b>3,1 MB</b>prenos na mobile (ZMERANÉ)</div><div><b>35–44</b>CSS súborov na stránku</div><div><b>187</b>aktívnych produktov</div><div><b>89</b>produktov s 1 fotkou</div><div><b>0</b>chýbajúcich alt textov / SEO popisov</div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section id="cesta"><div class="wrap">
+<h2>4. Cesta zákazníka – dva pokoje jedného domu</h2>
+<p class="lead">Web rcprints.ch je predsieň, obchod shop.rcprints.ch je predajňa. Šípky ukazujú, kde dnes uniká záujem.</p>
+<div class="box">
+<svg viewBox="0 0 1100 420" width="100%" role="img" aria-label="Diagram cesty zákazníka">
+ <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9aa8b4"/></marker><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d9534f"/></marker></defs>
+ <path d="M60,120 L550,40 L1040,120 L1040,400 L60,400 Z" fill="#161d23" stroke="#2a3640" stroke-width="2"/>
+ <line x1="470" y1="130" x2="470" y2="400" stroke="#2a3640" stroke-dasharray="6 6"/>
+ <text x="150" y="160" fill="#c9a26b" font-size="15" font-weight="600">PREDSIEŇ · rcprints.ch (neoverené)</text>
+ <text x="600" y="160" fill="#c9a26b" font-size="15" font-weight="600">PREDAJŇA · shop.rcprints.ch</text>
+ <g font-size="12" fill="#e6ebef">
+  <rect x="90" y="190" width="150" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="165" y="218" text-anchor="middle">Instagram / vyhľadávanie</text>
+  <rect x="270" y="190" width="150" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="345" y="212" text-anchor="middle">Web: príbeh, o mne</text><text x="345" y="228" text-anchor="middle" fill="#9aa8b4" font-size="10">odkaz do obchodu?</text>
+  <rect x="500" y="190" width="120" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="560" y="212" text-anchor="middle">Domov</text><text x="560" y="228" text-anchor="middle" fill="#9aa8b4" font-size="10">pop-up po 6 s</text>
+  <rect x="640" y="190" width="120" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="700" y="212" text-anchor="middle">Kolekcia</text><text x="700" y="228" text-anchor="middle" fill="#9aa8b4" font-size="10">tag-URL duplicity</text>
+  <rect x="780" y="190" width="120" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="840" y="212" text-anchor="middle">Produkt (PDP)</text><text x="840" y="228" text-anchor="middle" fill="#9aa8b4" font-size="10">1 fotka, bez recenzií</text>
+  <rect x="920" y="190" width="100" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="970" y="212" text-anchor="middle">Košík</text><text x="970" y="228" text-anchor="middle" fill="#9aa8b4" font-size="10">bez lišty dopravy</text>
+  <rect x="780" y="300" width="240" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="900" y="322" text-anchor="middle">Pokladňa (Shopify)</text><text x="900" y="338" text-anchor="middle" fill="#9aa8b4" font-size="10">TWINT? · 2 sadzby pri pohľadniciach</text>
+  <rect x="500" y="300" width="240" height="46" rx="8" fill="#1c252d" stroke="#2a3640"/><text x="620" y="322" text-anchor="middle">Darčekový poukaz</text><text x="620" y="338" text-anchor="middle" fill="#ff9b98" font-size="10">„Gedruckte Karte“ → 404</text>
+ </g>
+ <g stroke="#9aa8b4" stroke-width="2" fill="none" marker-end="url(#ar)">
+  <line x1="240" y1="213" x2="268" y2="213"/><line x1="420" y1="213" x2="498" y2="213"/><line x1="620" y1="213" x2="638" y2="213"/><line x1="760" y1="213" x2="778" y2="213"/><line x1="900" y1="213" x2="918" y2="213"/><line x1="970" y1="236" x2="930" y2="298"/>
+ </g>
+ <g stroke="#d9534f" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#arr)">
+  <path d="M560,236 L560,380"/><path d="M840,236 L840,380"/><path d="M620,346 L620,390"/><path d="M345,236 L345,380"/>
+ </g>
+ <g fill="#d9534f" font-size="11"><text x="330" y="395">odchod: nejasný odkaz do obchodu</text><text x="545" y="395">odchod: pop-up</text><text x="800" y="395">odchod: málo dôkazov</text></g>
+</svg>
+</div>
+<h3>Pred a po – mentálny model</h3>
+<div class="grid2">
+ <div class="box"><h4>Dnes</h4><p class="small">Pristátie → pop-up (6 s) → hero vedie na CHF 249+ → PDP s jednou fotkou → košík bez informácie o doprave → pokladňa s otázkami (TWINT? dve sadzby?) → pri poukaze možný 404.</p></div>
+ <div class="box"><h4>Cieľ</h4><p class="small">Pristátie bez prekážky → dve cesty (originál za 249+ / začni za CHF 20) → PDP s 3 až 5 fotkami, hodnoteniami a tabuľkou veľkostí → košík s lištou „ešte CHF X do dopravy zadarmo“ → pokladňa s TWINT, jednou jasnou sadzbou → poukaz bez slepej uličky. Pop-up až po 25 s alebo pri odchode, nikdy v košíku.</p></div>
+</div>
+</div></section>
+
+<section id="shopify"><div class="wrap">
+<h2>5. Shopify obchod – prehľad oblastí A až X</h2>
+<p class="lead">Krátke hodnotenie každej oblasti. Detaily sú v Nálezoch (sekcia 8).</p>
+<table>
+<tr><th>Oblasť</th><th>Stav</th><th>Zhrnutie (ZMERANÉ, ak nie je uvedené inak)</th></tr>
+<tr><td>A. Prvý dojem a dôvera značky</td><td><span class="tag sev-med">Medium</span></td><td>Pokojný dizajn, jasný claim „Linolschnitte aus Bern – jedes Blatt von Hand gedruckt“, logo, DE/EN. Pop-up po 6 s na každej šablóne kazí prvé 3 sekundy pri druhom pohľade. „Powered by Shopify“ v pätičke.</td></tr>
+<tr><td>B. Informačná architektúra a navigácia</td><td><span class="tag sev-med">Medium</span></td><td>10 položiek v hlavnom menu, 4 z nich vedú na tag-filtrované URL (/collections/all/werk, /all/original, /all/handdruck, /all/karten) namiesto skutočných kolekcií. Pätička len právne stránky, chýba „O mne“, „FAQ“, „Versand“ ako obsah.</td></tr>
+<tr><td>C. Domovská stránka</td><td><span class="tag sev-low">Low</span></td><td>Dobrá štruktúra: hero, kategórie, A3/A4, malé formáty, sety, „Mehr als Blätter“, „So entsteht ein Linolschnitt“, newsletter. Jediné CTA v hero mieri na drahý segment. 46 obrázkov, 25 z nich väčších ako treba (2,2× oproti zobrazeniu).</td></tr>
+<tr><td>D. Kolekcie / merchandising</td><td><span class="tag sev-med">Medium</span></td><td>13 verejných kolekcií so SEO titulkami a popismi. Prázdna „Werkstatt“ (18 produktov v koncepte) je živá a v sitemape. Stránka /collections má anglický nadpis „Collections“ a zobrazuje „Home page“ (0 produktov) aj internú „Postkarten-Motive“.</td></tr>
+<tr><td>E. Produktové stránky (PDP)</td><td><span class="tag sev-high">High</span></td><td>Texty výborné a poctivé („Kein Original“, papier, náklad). Ale 89 zo 187 produktov má 1 fotku, vrátane všetkých 9 originálov (CHF 249–390) s 1080 px obrázkom. Bez tabuľky veľkostí pri tričkách a mikine. Žiadne hodnotenia. Cross-sell „Dieses Motiv in anderen Formaten“ funguje dobre.</td></tr>
+<tr><td>F. Vyhľadávanie a filtre</td><td><span class="tag sev-ok">OK</span></td><td>„katze“ → 8 výsledkov, filtre dostupnosť a cena, prediktívne vyhľadávanie zapnuté. Prázdny výsledok má zrozumiteľnú hlášku.</td></tr>
+<tr><td>G. Košík, mini-košík, upsell</td><td><span class="tag sev-med">Medium</span></td><td>Cart drawer aj stránka /cart fungujú, text o cenách bez DPH je jasný. Chýba lišta „ešte CHF X do dopravy zadarmo“ (hranica CHF 75 existuje), chýba odporúčaný lacný doplnok (pohľadnice).</td></tr>
+<tr><td>H. Pokladňa (verejne pozorovateľné)</td><td><span class="tag sev-crit">Critical</span></td><td>Shop Pay, Apple Pay, Google Pay, Klarna, Visa, Mastercard, Amex, UnionPay. TWINT v ikonách chýba, hoci hero a meta description ho sľubujú. Pohľadnice samostatne: 2 sadzby (CHF 5 a CHF 12). Tričko samostatne: CHF 12 (31 % z ceny). Originál: doprava zadarmo.</td></tr>
+<tr><td>I. Účet, wishlist, vrátenie</td><td><span class="tag sev-low">Low</span></td><td>Nový zákaznícky účet Shopify (Orders, Profile). Wishlist neexistuje (pri 187 produktoch a darčekovom použití by pomohol). Vrátenie tovaru vysvetlené v Widerrufsrecht.</td></tr>
+<tr><td>J. Obsah a príbeh</td><td><span class="tag sev-med">Medium</span></td><td>Stránka „Linolschnitt aus Bern“ je dobrá (postup, FAQ). Blog „News“ je prázdny a živý na /blogs/news. Len 2 stránky. Príbeh autora (Richard Červenka, Bern) sa objavuje iba v Impressum a kontakte.</td></tr>
+<tr><td>K. Jazyk textov</td><td><span class="tag sev-low">Low</span></td><td>DE aj EN kompletné, 0 nemeckých zvyškov na EN stránkach (kontrolované 3 šablóny). Výnimky: „Collections“ (H1 na DE stránke), „Stay hydrated“ a „Wear &amp; Carry“ ako anglické názvy kolekcií – zámer, ale nekonzistentné.</td></tr>
+<tr><td>L. Dizajnový systém web ↔ obchod</td><td><span class="tag sev-med">Medium</span></td><td>Obchod používa 3 rodiny písma (Lora z Google, Assistant zo Shopify, GT Standard na PDP). Web som nevidel, súlad neviem potvrdiť.</td></tr>
+<tr><td>M. Mobil / tablet / desktop</td><td><span class="tag sev-med">Medium</span></td><td>Sticky „In den Warenkorb“ na PDP je. 11 až 46 dotykových cieľov menších ako 44 px podľa stránky. Pop-up zaberá celý mobil. Set „nach Wahl“ na mobile: CLS 0,142 (posun rozloženia) a 21 zbytočne veľkých náhľadov.</td></tr>
+<tr><td>N. Výkon / Core Web Vitals</td><td><span class="tag sev-high">High</span></td><td>Domov mobil: 231 požiadaviek, 3,1 MB, <dfn title="Largest Contentful Paint – kedy sa vykreslí najväčší prvok">LCP</dfn> 2,2 s (lab). Košík, kontakt, 404, set na mobile: LCP 7,2–7,5 s, lebo najväčším prvkom je pop-up po 6 s. 35–44 CSS súborov, 26–33 skriptov, Google Fonts z externého servera.</td></tr>
+<tr><td>O. SEO technické a on-page</td><td><span class="tag sev-med">Medium</span></td><td>Canonical, hreflang de/en/x-default, JSON-LD (OnlineStore, WebSite, BreadcrumbList, ProductGroup) v poriadku. Všetkých 187 produktov má SEO titulok a popis, 47 titulkov je dlhších ako 60 znakov. Tag-URL duplikujú kolekcie, /collections/all má titulok „Produkte – RC prints“ bez popisu. robots.txt štandard, sitemap úplná, security.txt chýba (nepovinné).</td></tr>
+<tr><td>P. Analytika, pixely, súhlas</td><td><span class="tag sev-med">Medium</span></td><td>Google tag GT-KFN9MG9M cez Shopify pixel, Shopify web-pixels. Cookie lišta sa nezobrazila ani na mobile, ani na desktope (de-CH). Pre švajčiarskych zákazníkov nie je lišta povinná, ale Google Fonts a Google tag vyžadujú korektné informovanie v Datenschutzerklärung – overiť s právnikom.</td></tr>
+<tr><td>Q. Prístupnosť</td><td><span class="tag sev-med">Medium</span></td><td>„Direkt zum Inhalt“ existuje, aria-label 28–29 na stránku, dekoratívne obrázky s prázdnym alt. Odkazy „Deutsch“/„English“ v pätičke majú href="#". Kontrast sivého textu na svetlom pozadí neoverený nástrojom.</td></tr>
+<tr><td>R. Dôvera, recenzie, UGC</td><td><span class="tag sev-high">High</span></td><td>Žiadne hodnotenia, žiadne fotky od zákazníkov, žiadne „x listov predaných“, žiadne médiá. Jediný sociálny dôkaz je ikona Instagramu. Pri originále za CHF 390 to chýba najviac.</td></tr>
+<tr><td>S. Právne stránky</td><td><span class="tag sev-ok">OK</span></td><td>Impressum (meno, adresa Steinauweg 12, 3007 Bern, e-mail), Kontaktinformationen, Versand, Widerrufsrecht (správne uvádza, že v CH nie je zákonné právo na odstúpenie), AGB, Datenschutzerklärung (21 000 znakov). DE aj EN. Nie som právnik – odporúčam raz ročne kontrolu.</td></tr>
+<tr><td>T. Aplikácie</td><td><span class="tag sev-low">Low</span></td><td>Nainštalované: Gelato (tlač na objednávku), Translate &amp; Adapt, Messaging (Inbox), Order Printer Pro, Swiss Post Labels, Flow, Lovable, Shopify Claude Connector, vlastná „RC prints preklady“. Na storefronte nevidno chat widget ani ťažké appky – dobré. Google &amp; YouTube kanál posiela pixel.</td></tr>
+<tr><td>U. Cesta naprieč weby</td><td><span class="tag sev-med">Medium</span></td><td>Impressum a Kontakt odkazujú na www.rcprints.ch. Neviem overiť, či web odkazuje späť do obchodu, či zdieľa dizajn a či používa UTM parametre.</td></tr>
+<tr><td>V. Internacionalizácia</td><td><span class="tag sev-low">Low</span></td><td>Jediný trh Switzerland, CHF, DE primárny + EN. 9 profilov dopravy Gelato so 16 zahraničnými zónami je mŕtvy balast (bez trhu sa nepoužijú). „shipsToCountries“ vracia 200+ krajín, politika hovorí „nur Schweiz“ – reálne to drží trh.</td></tr>
+<tr><td>W. Okrajové prípady</td><td><span class="tag sev-crit">Critical</span></td><td>404: holá stránka „Seite nicht gefunden – Weiter shoppen“. Prázdna kolekcia Werkstatt živá. Prázdny blog živý. Poukaz → tlačená karta → 404. Dlhé názvy (5 produktov nad 60 znakov). Sold-out sa zobrazuje správne (prečiarknuté varianty), no pri tričku sú prečiarknuté dámske farby, kým je zvolený pánsky strih, čo mätie.</td></tr>
+<tr><td>X. Bezpečnostná hygiena</td><td><span class="tag sev-ok">OK</span></td><td>HTTPS, HTTP → 301 na HTTPS, HSTS, CSP block-all-mixed-content, X-Frame-Options DENY, Cloudflare. Žiadne cudzie skripty mimo Shopify a shop.app.</td></tr>
+</table>
+</div></section>
+
+<section id="web"><div class="wrap">
+<h2>6. Marketingový web rcprints.ch</h2>
+<p class="lead">Stav: <b>neauditované</b>. Toto nie je hodnotenie webu, len fakty o tom, prečo chýba.</p>
+<div class="grid2">
+<div class="box"><h4>Čo viem (ZMERANÉ)</h4><p class="small">DNS pre rcprints.ch a www.rcprints.ch ukazuje na Cloudflare (2606:4700:…). HTTPS spojenie z prostredia auditu proxy odmietla (403 CONNECT), takže som nevidel ani jednu stránku. Impressum a Kontaktinformationen v obchode na web odkazujú textom „Web: www.rcprints.ch“. V Shopify je nainštalovaná app Lovable, čo naznačuje, že web je pravdepodobne postavený v Lovable – overiť.</p></div>
+<div class="box"><h4>Čo urobiť, aby sa dal doauditovať</h4><p class="small">V nastaveniach prostredia Claude Code (Network access) povoliť domény rcprints.ch, www.rcprints.ch, shop.rcprints.ch, cdn.shopify.com a fonts.googleapis.com. Potom spustím rovnaký postup (crawl, snímky, metriky) a doplním skóre. Odhad: 45 minút.</p></div>
+</div>
+<h3>Čo si na webe skontrolovať sami, kým bude prístup (POSÚDENÉ, checklist)</h3>
+<ul class="small">
+<li>Každá stránka má viditeľný odkaz „Shop“ do shop.rcprints.ch, ideálne s parametrom <code>?utm_source=web&amp;utm_medium=nav</code>, aby ste v Shopify videli, koľko objednávok prišlo z webu.</li>
+<li>Rovnaké logo, písmo Lora/Assistant a farby (bordová #8f3b3b, béžová) ako v obchode. Ak web vyzerá inak, zákazník pochybuje, či je to tá istá firma.</li>
+<li>Produktové odkazy vedú na konkrétne PDP (napr. /products/original-f-ladder), nie len na domov obchodu.</li>
+<li>Impressum a Datenschutz na webe zodpovedajú obchodu (rovnaká adresa, e-mail).</li>
+<li>Web má vlastný sitemap.xml a robots.txt, neblokuje indexáciu, canonical nie je nastavený na obchod.</li>
+</ul>
+</div></section>
+
+<section id="prepojenie"><div class="wrap">
+<h2>7. Prepojenie web ↔ obchod</h2>
+<div class="grid3">
+ <div class="box"><h4>Domény</h4><p class="small">Obchod beží na subdoméne shop.rcprints.ch (primárna doména, SSL). Hlavná doména rcprints.ch je mimo Shopify. Toto je čisté riešenie, pokiaľ web a obchod zdieľajú hlavičku a pätičku.</p></div>
+ <div class="box"><h4>Cesty návštevníka</h4><p class="small">Instagram (rc_prints_) → obchod priamo; Google → obchod (SEO titulky sú dobre napísané); web → obchod (neoverené). Z obchodu späť na web vedie iba text v Impressum, nie odkaz v menu.</p></div>
+ <div class="box"><h4>Odporúčanie</h4><p class="small">Rozhodnúť, čo je „domov“ značky. Ak web, obchod má mať v pätičke odkaz „Über RC prints → rcprints.ch“. Ak obchod, web má byť len vizitka s veľkým tlačidlom do obchodu. Dnes je to nejasné.</p></div>
+</div>
+</div></section>
+
+<section id="nalezy"><div class="wrap">
+<h2>8. Nálezy</h2>
+<p class="lead">Každá karta: čo som videl, prečo to stojí peniaze alebo dôveru, ako to opraviť. Filtrovať podľa závažnosti.</p>
+<div class="filters"><button class="on" data-f="all">Všetko (26)</button><button data-f="crit">Critical</button><button data-f="high">High</button><button data-f="med">Medium</button><button data-f="low">Low</button><button data-f="quick">Quick win</button></div>
+<div class="cards" id="cards">
+
+<div class="card c-crit" data-sev="crit quick"><h4>F01 · Darčekový poukaz: voľba „Gedruckte Karte per Post“ vedie na 404</h4><div class="meta"><span class="tag sev-crit">Critical</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>https://shop.rcprints.ch/products/geschenkgutschein, blok „Zustellung“ pod cenou. Odkaz mieri na /products/geschenkkarte-gedruckt → HTTP 404 (produkt „Geschenkkarte gedruckt (per Post)“ má stav Draft).</span></div>
+<div class="row"><b>Prečo záleží</b><span>Poukaz je typický darček „na poslednú chvíľu“. Kto chce tlačenú kartu, skončí na chybovej stránke a odíde. Vyzerá to ako rozbitý obchod.</span></div>
+<div class="row"><b>Oprava</b><span>Shopify admin → Products → „Geschenkkarte gedruckt (per Post)“ → Status: Active a skontrolovať kanál Online Store. Ak tlačenú kartu nechcete predávať, v Theme editore (šablóna product.gutschein, sekcia Zustellung) druhú voľbu odstrániť.</span></div>
+<div class="row"><b>Efekt</b><span>Žiadna slepá ulička pri darčekoch, hlavne pred Vianocami.</span></div></div>
+
+<div class="card c-crit" data-sev="crit quick"><h4>F02 · Sľub „Zahlung mit TWINT“ bez TWINT v platobných ikonách</h4><div class="meta"><span class="tag sev-crit">Critical</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ (ikony), overiť v nastaveniach</div>
+<div class="row"><b>Kde</b><span>Domov, hero: „Versand aus Bern · Zahlung mit TWINT oder Karte“; meta description: „Preise in CHF, TWINT“. Pätička zobrazuje ikony: American Express, Apple Pay, Google Pay, Klarna, Mastercard, Shop Pay, UnionPay, Visa. TWINT chýba.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Vo Švajčiarsku je TWINT pre mnohých prvá voľba. Ikony berie téma z reálne zapnutých platobných metód, takže TWINT pravdepodobne nie je aktívny. Sľúbená a chýbajúca platba je strata dôvery presne v pokladni.</span></div>
+<div class="row"><b>Oprava</b><span>Settings → Payments → Shopify Payments → Manage → zapnúť TWINT (dostupné pre CH). Ak nejde, odstrániť slovo TWINT z hero textu (Theme editor → sekcia Hero) a z meta description (Online Store → Preferences).</span></div>
+<div class="row"><b>Efekt</b><span>Menej opustených pokladní u zákazníkov bez kreditnej karty.</span></div></div>
+
+<div class="card c-high" data-sev="high quick"><h4>F03 · Pop-up „10 %“ po 6 sekundách na každej stránke vrátane košíka a 404</h4><div class="meta"><span class="tag sev-high">High</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>Sekcia témy „rc_popup“ (id sections--30606093451611__rc_popup). Skript: WAIT = 6000 ms, po zavretí 7 dní ticho (localStorage „rcPop“). Snímky: domov, kolekcia, PDP, set, košík, poukaz, 404 – všade rovnaké okno cez celý mobil.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Kto klikol z Instagramu na konkrétny produkt, dostane po 6 s okno namiesto fotky. V košíku pop-up prerušuje platenie. Technicky: na ľahkých stránkach (košík, kontakt, 404, set na mobile) sa pop-up stal najväčším prvkom, LCP 7,2–7,5 s – Google to počíta ako pomalú stránku.</span></div>
+<div class="row"><b>Oprava</b><span>Theme editor → sekcia Pop-up: zobrazovať iba na domove a kolekciách, po 25 s alebo po 50 % scrollu, nikdy na /cart, /products, 404. Alternatíva: lišta v pätičke (už existuje „Neue Drucke zuerst sehen“) a pop-up len pri odchode (exit intent) na desktope.</span></div>
+<div class="row"><b>Efekt</b><span>Rýchlejší dojem, menej odchodov v prvých 10 sekundách, lepšie Core Web Vitals.</span></div></div>
+
+<div class="card c-high" data-sev="high"><h4>F04 · Pohľadnice samostatne: pokladňa ponúka dve sadzby dopravy (CHF 5 a CHF 12)</h4><div class="meta"><span class="tag sev-high">High</span> Shopify · Effort S · ZMERANÉ (skúšobný košík, adresa 3007 Bern)</div>
+<div class="row"><b>Kde</b><span>Košík len s „Postkarten nach Wahl“ (CHF 24): /cart/shipping_rates.json vrátil „Postkarten-Versand (nur Postkarten) 5.00“ aj „Versand Schweiz 12.00“. Tričko samostatne: len 12.00. Originál CHF 390: „Kostenloser Versand ab CHF 75“. Politika Versand sľubuje: pohľadnice CHF 5.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Zákazník nevie, ktorú vybrať. Ak je predvolená 12, preplatí a cíti sa oklamaný; ak vidí obe, váha. Pri CHF 24 objednávke je doprava 50 % ceny.</span></div>
+<div class="row"><b>Oprava</b><span>Settings → Shipping and delivery: sadzbu „Versand Schweiz“ obmedziť podmienkou (napr. hmotnosť od 60 g) alebo pohľadnice presunúť do vlastného profilu s jedinou sadzbou CHF 5. Otestovať tromi košíkmi: len pohľadnice, pohľadnice + malý formát, len originál.</span></div>
+<div class="row"><b>Efekt</b><span>Jedna jasná sadzba, žiadne reklamácie „prečo 12“.</span></div></div>
+
+<div class="card c-high" data-sev="high"><h4>F05 · Jedna fotografia pri 89 zo 187 produktov, vrátane všetkých originálov</h4><div class="meta"><span class="tag sev-high">High</span> Shopify · Effort M (fotenie) · ZMERANÉ (Admin API)</div>
+<div class="row"><b>Kde</b><span>1 médium: Tasche 28, Handdruck Kleinformat 20, Poster 20, Original 9, Reproduktion 8, Set 3, Postkarten 1. Originály majú titulnú fotku 1080 × 1080 px, tašky 900 × 1125 px. Napr. https://shop.rcprints.ch/products/original-f-ladder (CHF 390): „1 / von 1“.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Pri umení kupuje oko. Bez detailu tlače, pohľadu na papier, na rám zboku a na mierku na stene zákazník váha a odloží nákup. Tričká majú 36 fotiek, originály jednu – pomer je naopak k cene.</span></div>
+<div class="row"><b>Oprava</b><span>Pre každý originál 4 fotky (celok, detail štruktúry tlače, podpis/číslo, na stene s mierkou), min. 2000 px. Pre tašky 2 fotky (na osobe, detail). Nahrať cez Products → Media; alt text v DE/EN podľa existujúceho vzoru.</span></div>
+<div class="row"><b>Efekt</b><span>Vyššia konverzia na najdrahších položkách, kde každý predaj je CHF 249–390.</span></div></div>
+
+<div class="card c-high" data-sev="high"><h4>F06 · Žiadny sociálny dôkaz: recenzie, fotky zákazníkov, médiá</h4><div class="meta"><span class="tag sev-high">High</span> Shopify · Effort M · ZMERANÉ (žiadny widget na 26 stránkach)</div>
+<div class="row"><b>Kde</b><span>Všetky PDP a domov. Jediný sociálny prvok je ikona Instagramu v pätičke.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Neznámy autor, cena originálu 249–390 CHF, bez práva na odstúpenie. Zákazník hľadá, či niekto iný už kúpil a bol spokojný. Bez toho je každý nákup skok do neznáma.</span></div>
+<div class="row"><b>Oprava</b><span>Nainštalovať bezplatnú aplikáciu na hodnotenia (napr. Judge.me Free alebo Shopify Reviews, ak je dostupná), po doručení poslať prosbu o hodnotenie cez Shopify Email/Flow. Na domov pridať sekciu s 3 fotkami od zákazníkov (Instagram) a jednou vetou o autorovi s fotkou z ateliéru. Pri originále pridať „Auflage 45, 12 verkauft“ (ak je pravda – ručne cez metafield).</span></div>
+<div class="row"><b>Efekt</b><span>Bežne 5–15 % viac dokončených nákupov pri produktoch s recenziami (POSÚDENÉ, odborný odhad, nie meranie tohto obchodu).</span></div></div>
+
+<div class="card c-high" data-sev="high quick"><h4>F07 · Tričká a mikina bez tabuľky veľkostí, pri obchode bez práva na vrátenie</h4><div class="meta"><span class="tag sev-high">High</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>https://shop.rcprints.ch/products/tshirt-cat (60 variantov, XS–XXL, pánsky/dámsky strih), /products/rc-prints-hoodie-mit-gesticktem-logo. V texte nie je rozmer hrudníka ani dĺžka, len „Grössen S bis XL“.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Widerrufsrecht hovorí, že tovar sa nevracia. Kto si nie je istý veľkosťou, radšej nekúpi. Kto kúpi zle, píše nahnevaný e-mail.</span></div>
+<div class="row"><b>Oprava</b><span>Od Gelato stiahnuť rozmerovú tabuľku (Stanley/Stella alebo SOL'S podľa modelu) a pridať ako blok „Grössentabelle“ (Theme editor → Product → Add block → Collapsible row) alebo metafield s tabuľkou.</span></div>
+<div class="row"><b>Efekt</b><span>Menej váhania, menej reklamácií.</span></div></div>
+
+<div class="card c-high" data-sev="high"><h4>F08 · Ťažká stránka: 231 požiadaviek, 3,1 MB na mobile, 35–44 CSS súborov, externé Google Fonts</h4><div class="meta"><span class="tag sev-high">High</span> Shopify · Effort M (vývojár) · ZMERANÉ (Chromium, mobil 390 px)</div>
+<div class="row"><b>Kde</b><span>Domov: 231 požiadaviek, 3125 KB, LCP 2,2 s, 25 obrázkov väčších ako 2,2× zobrazenie. Kolekcia alle-werke: 236 požiadaviek, 1,6 MB. Fonty: Lora z fonts.googleapis.com, Assistant zo Shopify, GT Standard na PDP. 26–33 externých skriptov, 37 inline skriptov (61 KB).</span></div>
+<div class="row"><b>Prečo záleží</b><span>Na mobilnej sieti v Berne to znamená 2 až 4 sekundy čakania na prvé obrázky. Každá sekunda navyše stojí časť návštevníkov. Google používa rýchlosť ako signál poradia.</span></div>
+<div class="row"><b>Oprava</b><span>Vývojár: (1) zlúčiť component-*.css do 2–3 súborov alebo načítať len potrebné sekcie; (2) Lora nahrať do témy (Assets) a načítať lokálne, zrušiť preconnect na Google; (3) na domove obmedziť sekciu tričiek/kategórií na obrázky do 1200 px cez image_url width; (4) odstrániť nepoužívané skripty (quantity-popover, cart-disclosure) ak ich stránka nepotrebuje. Cieľ: pod 120 požiadaviek, pod 1,5 MB.</span></div>
+<div class="row"><b>Efekt</b><span>Rýchlejší dojem, lepšie Core Web Vitals, menej dát pre mobilných zákazníkov.</span></div></div>
+
+<div class="card c-med" data-sev="med quick"><h4>F09 · Menu vedie na tag-filtrované URL namiesto kolekcií (duplicitné stránky pre Google)</h4><div class="meta"><span class="tag sev-med">Medium</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>Hlavné menu: „Alle Werke“ → /collections/all/werk (existuje /collections/alle-werke so SEO titulkom), „A3/A4-Formate“ → /collections/all/original (kolekcia „Originale“ neexistuje), „Kleinformate“ → /collections/all/handdruck (existuje /collections/kleinformate), „Postkarten“ → /collections/all/karten. /collections/all má titulok „Produkte – RC prints“ bez meta description.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Google vidí dve stránky s rovnakým obsahom a nevie, ktorú ukázať. Interné odkazy z menu (najsilnejšie) idú na tú slabšiu. Tag-stránky nemajú popis kolekcie ani obrázok.</span></div>
+<div class="row"><b>Oprava</b><span>Online Store → Navigation → Main menu: prelinkovať na /collections/alle-werke a /collections/kleinformate; vytvoriť kolekciu „Originale A3/A4“ (podmienka tag = original) a „Postkarten“ (tag = karten), doplniť SEO titulok a popis. Prípadne v téme pridať canonical z tag-URL na kolekciu (vývojár).</span></div>
+<div class="row"><b>Efekt</b><span>Jasnejšie poradie vo vyhľadávaní, lepšie stránky kategórií.</span></div></div>
+
+<div class="card c-med" data-sev="med quick"><h4>F10 · Prázdna kolekcia „Werkstatt“, prázdny blog a interné kolekcie sú verejné</h4><div class="meta"><span class="tag sev-med">Medium</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>https://shop.rcprints.ch/collections/werkstatt – 0 produktov (18 produktov v stave Draft), je v sitemap_collections. https://shop.rcprints.ch/blogs/news – 0 článkov. https://shop.rcprints.ch/collections – nadpis „Collections“ (EN), zobrazuje „Home page“ (0 produktov), „Postkarten-Motive“ (interná, noindex), „Werkstatt“, „Sets“ bez popisu.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Prázdne regály vyzerajú ako opustený obchod a Google ich indexuje ako tenký obsah.</span></div>
+<div class="row"><b>Oprava</b><span>Products → Collections → Werkstatt → Sales channels: vypnúť Online Store, kým nie sú produkty aktívne. Postkarten-Motive a Home page tiež vypnúť z Online Store (postkarten výber tým nestratí funkciu, ak téma číta kolekciu cez API/Liquid – overiť na PDP pohľadníc po zmene). Blog News: buď 2 články (napr. „Wie ein Linolschnitt entsteht“, „Neue Auflage“) alebo skryť. Nadpis „Collections“ preložiť v Theme content.</span></div>
+<div class="row"><b>Efekt</b><span>Čistejší obchod, žiadne tenké stránky v indexe.</span></div></div>
+
+<div class="card c-med" data-sev="med quick"><h4>F11 · Doprava CHF 12 pri lacných položkách bez upozornenia na hranicu CHF 75</h4><div class="meta"><span class="tag sev-med">Medium</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>PDP: len „Versand wird beim Checkout berechnet“. Košík a cart drawer: bez lišty pokroku. Sadzby: CHF 12 do 74,99, zadarmo od 75. Tričko CHF 39 + doprava 12 = 31 % navyše.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Prekvapenie v pokladni je najčastejší dôvod opustenia košíka. Lišta „Noch CHF 36 bis Gratisversand“ naopak zvyšuje priemernú objednávku.</span></div>
+<div class="row"><b>Oprava</b><span>Theme editor → Cart drawer → zapnúť „Free shipping bar“ (v Dawn 15+ ako nastavenie; ak téma nemá, vývojár pridá 20 riadkov Liquid). Na PDP pod cenu jednu vetu: „Versand CHF 12 · ab CHF 75 gratis · Postkarten CHF 5“.</span></div>
+<div class="row"><b>Efekt</b><span>Menej prekvapení, viac košíkov nad 75.</span></div></div>
+
+<div class="card c-med" data-sev="med"><h4>F12 · Hero má jediné tlačidlo „Originale ansehen“ (vstup od CHF 249)</h4><div class="meta"><span class="tag sev-med">Medium</span> Shopify · Effort S · POSÚDENÉ</div>
+<div class="row"><b>Kde</b><span>Domov, prvá obrazovka. Cena „ab CHF 249.00“ je prvá cena, ktorú mobilný návštevník vidí.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Väčšina prvých návštev nekúpi originál. Lacný vstup (malý formát CHF 20, pohľadnice od CHF 24) je nižšie, kde sa mnohí nedostanú.</span></div>
+<div class="row"><b>Oprava</b><span>Druhé, sekundárne tlačidlo v hero: „Kleinformate ab CHF 20“. Pod hero pás „Originale · Kleinformate · Postkarten · Geschenke“ s cenou od.</span></div>
+<div class="row"><b>Efekt</b><span>Viac prvých nákupov, z ktorých rastú zákazníci originálov.</span></div></div>
+
+<div class="card c-med" data-sev="med"><h4>F13 · Set „Kleinformate nach Wahl“ na mobile: posun rozloženia 0,142 a 21 zbytočne veľkých náhľadov</h4><div class="meta"><span class="tag sev-med">Medium</span> Shopify · Effort S/M · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>https://shop.rcprints.ch/products/set-nach-wahl, mobil: CLS 0,142 (limit „dobré“ je 0,1), LCP 7,5 s (pop-up), 21 z 22 obrázkov väčších než treba. Výber motívov je vlastný kód témy.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Najlepší produkt na darček (CHF 49–114) má najhoršie technické hodnoty. Poskakovanie stránky pri ťukaní na motívy vedie k zlému výberu.</span></div>
+<div class="row"><b>Oprava</b><span>Vývojár: náhľady motívov cez image_url width 200, pevná výška dlaždíc (aspect-ratio), načítanie mimo obrazovky lazy.</span></div>
+<div class="row"><b>Efekt</b><span>Stabilný výber na mobile, lepšie CWV.</span></div></div>
+
+<div class="card c-med" data-sev="med"><h4>F14 · SEO titulky: 47 produktov nad 60 znakov, 5 názvov produktov nad 60 znakov</h4><div class="meta"><span class="tag sev-med">Medium</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>Napr. der-brunnen-bern-gerahmte-reproduktion-schwarzer-holzrahmen (SEO titulok 75 znakov), becher-heart (67). 7 meta description nad 160 znakov (set-schneekugeln-1: 231).</span></div>
+<div class="row"><b>Prečo záleží</b><span>Google titulok odreže, zákazník vo výsledkoch nevidí cenu ani „Bern“.</span></div>
+<div class="row"><b>Oprava</b><span>Products → Search engine listing: vzor „Motiv – Produkt Format | RC prints“ do 60 znakov; hlavné slovo dopredu.</span></div>
+<div class="row"><b>Efekt</b><span>Lepší klik z vyhľadávania.</span></div></div>
+
+<div class="card c-med" data-sev="med"><h4>F15 · Súhlas s cookies a externé služby: lišta sa nezobrazuje, Google tag a Google Fonts sú aktívne</h4><div class="meta"><span class="tag sev-med">Medium</span> Shopify · Effort S · ZMERANÉ (žiadny banner v de-CH), právne posúdenie u právnika</div>
+<div class="row"><b>Kde</b><span>Domov, PDP, košík: element súhlasu sa nevykreslil. Google tag GT-KFN9MG9M cez Shopify pixel, Lora z fonts.googleapis.com. Datenschutzerklärung má 21 000 znakov – obsah som právne nehodnotil.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Švajčiarsky nDSG lištu nevyžaduje, ale vyžaduje informovanie. Ak obchod niekedy otvorí trh EU/DE, banner je povinný. Google Fonts z Google servera bol v Nemecku predmetom žalôb.</span></div>
+<div class="row"><b>Oprava</b><span>Settings → Customer privacy: skontrolovať, pre ktoré regióny je banner zapnutý. Lora hostovať lokálne (viď F08). Datenschutz raz dať prečítať právnikovi – nie som právnik.</span></div>
+<div class="row"><b>Efekt</b><span>Menšie riziko, menej externých požiadaviek.</span></div></div>
+
+<div class="card c-med" data-sev="med quick"><h4>F16 · Stránka 404 je prázdna</h4><div class="meta"><span class="tag sev-med">Medium</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>https://shop.rcprints.ch/toto-neexistuje: iba „404 – Seite nicht gefunden – Weiter shoppen“, potom pätička. Pop-up sa objaví aj tu.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Na 404 prichádzajú ľudia zo starých odkazov (napr. archivované „open edition print“ produkty s anglickými názvami). Prázdna stránka ich stráca.</span></div>
+<div class="row"><b>Oprava</b><span>Theme editor → 404 template: vyhľadávacie pole, 4 dlaždice kolekcií, veta „Schreib mir: info@rcprints.ch“. V Online Store → Navigation → URL redirects presmerovať staré handles (print-cat → original-cat atď.).</span></div>
+<div class="row"><b>Efekt</b><span>Záchrana stratených návštev.</span></div></div>
+
+<div class="card c-med" data-sev="med"><h4>F17 · Prístupnosť: malé dotykové ciele, odkazy „#“, neoverený kontrast</h4><div class="meta"><span class="tag sev-med">Medium</span> Shopify · Effort S/M · ZMERANÉ (počty), kontrast POSÚDENÉ</div>
+<div class="row"><b>Kde</b><span>Ciele menšie ako 44 px: domov mobil 11, PDP tričko mobil 31, kolekcia Wear &amp; Carry desktop 46. Pätička: „Deutsch“, „English“ ako odkazy s href="#". Sivý drobný text (napr. „Endpreis – RC prints ist nicht mehrwertsteuerpflichtig“) na béžovom pozadí – kontrast treba zmerať.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Starší zákazníci a ľudia s väčšími prstami sa netrafia do prepínačov farieb a veľkostí. Odkazy na „#“ mätú čítačky.</span></div>
+<div class="row"><b>Oprava</b><span>V CSS témy minimálna výška 44 px pre pills variantov a prepínače; jazykový prepínač ako tlačidlá formulára (Dawn to má), nie odkazy; kontrast overiť nástrojom (napr. WebAIM Contrast Checker) a stmaviť sivú na #5a6570.</span></div>
+<div class="row"><b>Efekt</b><span>Menej chybných kliknutí, lepšie hodnotenie prístupnosti.</span></div></div>
+
+<div class="card c-med" data-sev="med"><h4>F18 · Prepojenie s webom rcprints.ch je len text v Impressum</h4><div class="meta"><span class="tag sev-med">Medium</span> Both · Effort S · ZMERANÉ (obchod), web neoverený</div>
+<div class="row"><b>Kde</b><span>/policies/legal-notice a /policies/contact-information: „Web: www.rcprints.ch“ (text). V menu ani pätičke obchodu nie je odkaz na web. Opačný smer neviem overiť.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Zákazník, ktorý chce vedieť viac o autorovi, nemá kam ísť. Web bez odkazu do obchodu stráca predaje.</span></div>
+<div class="row"><b>Oprava</b><span>Pätička obchodu: „Über RC prints“ → rcprints.ch. Na webe: tlačidlo „Zum Shop“ v hlavičke s UTM. Sprístupniť web pre doaudit (sekcia 6).</span></div>
+<div class="row"><b>Efekt</b><span>Uzavretý kruh web ↔ obchod, merateľný prínos webu.</span></div></div>
+
+<div class="card c-med" data-sev="med"><h4>F19 · Popisy 15 plátien 20 × 20 cm majú len 165 znakov</h4><div class="meta"><span class="tag sev-med">Medium</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>Všetky *-leinwanddruck-20-20-cm okrem 5 (Katze, Krake, Schneekugel Baum/Espressokanne/Herz majú dlhšie). Titulok a horný blok „Reproduktion – kein Original“ sú dobré, chýba materiál, hrúbka rámu, závesný systém.</span></div>
+<div class="row"><b>Prečo záleží</b><span>Krátky popis = menej dôvery a menej slov pre Google.</span></div>
+<div class="row"><b>Oprava</b><span>Jeden spoločný odsek (plátno, keilrahmen 2 cm, hák, tlač Gelato v Európe, 14 dní) do všetkých 20 cez Bulk editor alebo metafield.</span></div>
+<div class="row"><b>Efekt</b><span>Konzistentné PDP, lepšie SEO.</span></div></div>
+
+<div class="card c-low" data-sev="low"><h4>F20 · Prečiarknuté dámske farby pri zvolenom pánskom strihu</h4><div class="meta"><span class="tag sev-low">Low</span> Shopify · Effort S · ZMERANÉ (snímka PDP desktop)</div>
+<div class="row"><b>Kde</b><span>/products/tshirt-cat: pri „Herren“ sú Hellgelb, Flieder, Marineblau a XS prečiarknuté. Vyzerá to ako vypredané.</span></div>
+<div class="row"><b>Oprava</b><span>Theme editor → Product → Variant picker: skryť nedostupné kombinácie (Dawn 15 „hide unavailable“) alebo popisok „nur Damenschnitt“.</span></div>
+<div class="row"><b>Efekt</b><span>Menej dojmu „vypredané“.</span></div></div>
+
+<div class="card c-low" data-sev="low quick"><h4>F21 · „Powered by Shopify“ a dva jazykové prepínače v hlavičke</h4><div class="meta"><span class="tag sev-low">Low</span><span class="tag sev-quick">Quick win</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>Pätička: „2026 RC prints Powered by Shopify“. Hlavička desktop: rozbaľovač „Deutsch“; mobil: „DE / EN“ plus rozbaľovač v menu; pätička: ďalší prepínač.</span></div>
+<div class="row"><b>Oprava</b><span>Theme content → Footer: text „Powered by Shopify“ nahradiť medzerou. Nechať jeden prepínač (DE / EN), ostatné vypnúť v sekciách Header a Footer.</span></div>
+<div class="row"><b>Efekt</b><span>Profesionálnejší dojem.</span></div></div>
+
+<div class="card c-low" data-sev="low"><h4>F22 · Balast v doprave: 9 profilov Gelato so 16 zahraničnými zónami</h4><div class="meta"><span class="tag sev-low">Low</span> Shopify · Effort S · ZMERANÉ (Admin API)</div>
+<div class="row"><b>Kde</b><span>Settings → Shipping: profily „Gelato: Small Posters“ … „Small Framed Canvas“, zóny AU, BR, CA, DE, EU, GB … s cenami. Jediný aktívny trh je Switzerland, takže sa nepoužijú. Skúšobný košík s tričkom dostal správne „Versand Schweiz“.</span></div>
+<div class="row"><b>Oprava</b><span>Nechať, ale nemazať bez porady s Gelato (app ich spravuje). Ak budete otvárať Nemecko, tieto sadzby (napr. DE 5,22 CHF za poster) treba najprv prepočítať – sú pod skutočnými nákladmi.</span></div>
+<div class="row"><b>Efekt</b><span>Prehľad pred expanziou.</span></div></div>
+
+<div class="card c-low" data-sev="low"><h4>F23 · Chýba wishlist / „Merken“ pri 187 produktoch a darčekovom nákupe</h4><div class="meta"><span class="tag sev-low">Low</span> Shopify · Effort M · POSÚDENÉ</div>
+<div class="row"><b>Oprava</b><span>Ľahká app wishlistu alebo tlačidlo „Link kopieren“ (už existuje „Teilen“) doplniť o „Als Geschenkwunsch senden“. Nie priorita.</span></div></div>
+
+<div class="card c-low" data-sev="low"><h4>F24 · Kontaktná stránka: dobrá, ale bez očakávaného času a bez odkazu na FAQ</h4><div class="meta"><span class="tag sev-low">Low</span> Shopify · Effort S · ZMERANÉ</div>
+<div class="row"><b>Kde</b><span>/pages/contact: „Ich antworte selbst, meistens innerhalb von zwei Tagen“ – dobré. Formulár: Name, E-Mail, Telefon, Kommentar. Chýba odkaz na „Häufige Fragen“ (existujú na /pages/linolschnitt-aus-bern).</span></div>
+<div class="row"><b>Oprava</b><span>Nad formulár 3 odkazy: Versand, Widerrufsrecht, FAQ. Telefón označiť „optional“ (už je).</span></div></div>
+
+<div class="card c-low" data-sev="low"><h4>F25 · Anglické názvy kolekcií „Wear &amp; Carry“, „Stay hydrated“ v nemeckom obchode</h4><div class="meta"><span class="tag sev-low">Low</span> Shopify · Effort S · POSÚDENÉ</div>
+<div class="row"><b>Oprava</b><span>Je to štýl značky, môže ostať. Odporúčam podtitul v DE („T-Shirts, Taschen &amp; Hoodies“) v popise kolekcie, ktorý dnes chýba (Wear &amp; Carry a Sets majú prázdny popis).</span></div></div>
+
+<div class="card c-low" data-sev="low"><h4>F26 · Pozitíva, ktoré treba zachovať</h4><div class="meta"><span class="tag sev-ok">OK</span> Shopify · ZMERANÉ</div>
+<div class="row"><b>Čo funguje</b><span>Poctivé rozlíšenie originál vs. reprodukcia na každom PDP; 1008 + 40 alt textov DE/EN bez chyby; kompletné EN; hreflang a canonical; JSON-LD ProductGroup; právne stránky ľudsky napísané; sticky tlačidlo do košíka; cross-sell „Dieses Motiv in anderen Formaten“; bezpečnostné hlavičky; jasná komunikácia „nicht mehrwertsteuerpflichtig“; doprava zadarmo od CHF 75 pri originále funguje.</span></div></div>
+
+</div>
+</div></section>
+
+<section id="oprava"><div class="wrap">
+<h2>9. Ako to opraviť – pohľad šiestich špecialistov a matica priorít</h2>
+<p class="lead">Šesť uhlov pohľadu, jeden zosúladený zoznam. Kde sa názory líšili, rozhodol som a napísal prečo.</p>
+<div class="grid3">
+ <div class="box"><h4>CRO (konverzia)</h4><p class="small">Najprv odstrániť slepé uličky (F01, F02, F04), potom pop-up (F03), potom lišta dopravy (F11) a druhé CTA (F12). Recenzie (F06) sú najväčšia páka na originály.</p></div>
+ <div class="box"><h4>Téma a aplikácie</h4><p class="small">Všetko z „tento týždeň“ ide cez Theme editor alebo Settings, bez kódu. Vývojár je potrebný na F08 (CSS/JS), F13 (výber motívov) a canonical pre tag-URL (F09, voliteľné).</p></div>
+ <div class="box"><h4>SEO a obsah</h4><p class="small">Menu na skutočné kolekcie (F09), zavrieť prázdne stránky (F10), skrátiť titulky (F14), doplniť popisy plátien (F19). Blog: 1 článok mesačne o vzniku listu – prináša dlhé vyhľadávania „Linolschnitt kaufen Bern“.</p></div>
+ <div class="box"><h4>Výkon</h4><p class="small">Poradie: pop-up mimo LCP (F03) → lokálne fonty a menej CSS (F08) → obrázky domova na 1200 px → set na mobile (F13). Nepridávať ďalšie appky s vlastnými skriptami; recenzie vybrať s ľahkým widgetom.</p></div>
+ <div class="box"><h4>Dôvera a švajčiarsky zákazník</h4><p class="small">TWINT (F02), jasná jediná sadzba (F04), fotky originálov (F05), recenzie a tvár autora (F06). Konflikt s CRO: CRO chce pop-up so zľavou, dôvera chce pokoj. Rozhodnutie: pop-up ostáva, ale neskôr a len na domove/kolekciách – zľava 10 % má hodnotu, načasovanie bolo problém.</p></div>
+ <div class="box"><h4>Vysvetľovač pre začiatočníka</h4><p class="small">Každý bod nižšie má „kto“ a „kde kliknúť“. Ak je pri úlohe „vývojár“, neskúšajte to v editore kódu témy sami – jedna chyba v Liquid zhodí celú stránku.</p></div>
+</div>
+
+<h3>Matica dopad × námaha</h3>
+<div class="matrix">
+ <div class="q hot"><h4>Veľký dopad · malá námaha → TERAZ</h4><span>F01 Poukaz 404</span><span>F02 TWINT</span><span>F03 Pop-up načasovanie</span><span>F04 Dve sadzby pri pohľadniciach</span><span>F07 Tabuľka veľkostí</span><span>F09 Menu na kolekcie</span><span>F10 Prázdne kolekcie/blog</span><span>F11 Lišta dopravy zadarmo</span><span>F16 Stránka 404</span></div>
+ <div class="q"><h4>Veľký dopad · väčšia námaha → NAPLÁNOVAŤ</h4><span>F05 Fotky originálov a tašiek</span><span>F06 Recenzie a sociálny dôkaz</span><span>F08 Výkon (CSS, fonty, obrázky)</span><span>F13 Set na mobile</span></div>
+ <div class="q"><h4>Menší dopad · malá námaha → POPRI TOM</h4><span>F12 Druhé CTA v hero</span><span>F14 Skrátiť SEO titulky</span><span>F19 Popisy plátien</span><span>F20 Prečiarknuté farby</span><span>F21 Powered by Shopify, prepínače</span><span>F24 Kontakt + FAQ</span><span>F25 Popisy Wear &amp; Carry, Sets</span></div>
+ <div class="q"><h4>Menší dopad · väčšia námaha → NESKÔR</h4><span>F15 Súhlas a externé služby (s právnikom)</span><span>F17 Prístupnosť plošne</span><span>F18 Web ↔ obchod (po doaudite)</span><span>F22 Profily Gelato</span><span>F23 Wishlist</span></div>
+</div>
+
+<h3>Top 10 na tento týždeň</h3>
+<ol class="top10">
+ <li><b>F01 Poukaz: zverejniť „Geschenkkarte gedruckt“ alebo odstrániť voľbu.</b> Kto: vy (Shopify admin). 15 min.</li>
+ <li><b>F02 TWINT: zapnúť v Shopify Payments alebo vymazať sľub z hero a meta description.</b> Kto: vy. 15 min (+ prípadné overenie Shopify).</li>
+ <li><b>F03 Pop-up: iba domov a kolekcie, po 25 s alebo 50 % scrollu, nikdy v košíku/PDP/404.</b> Kto: vy v Theme editore; ak sekcia nemá nastavenia, vývojár 30 min.</li>
+ <li><b>F04 Doprava: jedna sadzba pre košík len s pohľadnicami.</b> Kto: vy (Settings → Shipping). 30 min + 3 skúšobné košíky.</li>
+ <li><b>F11 Lišta „Noch CHF X bis Gratisversand“ v košíku + veta o doprave na PDP.</b> Kto: vy (Theme editor) alebo vývojár 1 h.</li>
+ <li><b>F09 Menu: odkazy na /collections/alle-werke a /collections/kleinformate, nové kolekcie Originale a Postkarten.</b> Kto: vy. 45 min.</li>
+ <li><b>F10 Vypnúť Werkstatt, Home page a Postkarten-Motive z Online Store; blog skryť alebo naplniť.</b> Kto: vy. 20 min.</li>
+ <li><b>F07 Tabuľka veľkostí pri tričkách a mikine.</b> Kto: vy (dáta od Gelato, blok Collapsible row). 1 h.</li>
+ <li><b>F16 Stránka 404 s vyhľadávaním a 4 kolekciami + presmerovania starých URL.</b> Kto: vy (Theme editor + URL redirects). 45 min.</li>
+ <li><b>F21 „Powered by Shopify“ preč, jeden jazykový prepínač.</b> Kto: vy. 10 min.</li>
+</ol>
+</div></section>
+
+<section id="plan"><div class="wrap">
+<h2>10. Plán 30 / 60 / 90 dní</h2>
+<div class="timeline">
+ <div class="tl"><div class="dot"></div><h4>Do 30 dní – zastaviť únik</h4><ul><li>Top 10 vyššie (týždeň 1)</li><li>Nafotiť 9 originálov (4 fotky) a 5 najpredávanejších tašiek (F05)</li><li>Zvoliť a nainštalovať ľahkú app na hodnotenia, nastaviť e-mail po doručení (F06)</li><li>Popisy plátien 20 × 20 a kolekcií Wear &amp; Carry, Sets (F19, F25)</li><li>Skrátiť 47 SEO titulkov (F14)</li><li>Sprístupniť web na doaudit (sekcia 6)</li></ul></div>
+ <div class="tl"><div class="dot"></div><h4>Do 60 dní – zrýchliť a spevniť</h4><ul><li>Vývojár: fonty lokálne, CSS zlúčiť, obrázky domova na 1200 px (F08)</li><li>Vývojár: set „nach Wahl“ bez posunov (F13)</li><li>Sekcia „Kunden zeigen“ na domove s 3–6 fotkami zákazníkov, tvár autora s vetou o ateliéri (F06)</li><li>Druhé CTA v hero „Kleinformate ab CHF 20“ (F12)</li><li>Prístupnosť: dotykové ciele 44 px, kontrast, jazykový prepínač (F17)</li><li>Datenschutz a súhlas s právnikom (F15)</li></ul></div>
+ <div class="tl"><div class="dot"></div><h4>Do 90 dní – rásť</h4><ul><li>Blog: 3 články (vznik listu, papier Hahnemühle, Bern-Motive) prepojené na kolekcie</li><li>Web rcprints.ch: jednotná hlavička, tlačidlo do obchodu s UTM, doaudit (F18)</li><li>Vyhodnotiť: podiel objednávok z webu, konverzia originálov pred/po fotkách, opustené košíky pred/po lište dopravy</li><li>Rozhodnúť o trhu DE/AT až po prepočte sadzieb Gelato (F22)</li></ul></div>
+</div>
+
+<h3>Riziká aplikácií a témy</h3>
+<table>
+<tr><th>Položka</th><th>Riziko</th><th>Odporúčanie</th></tr>
+<tr><td>Téma rcprints-theme-v90 (vlastná, na báze Dawn, schema 2.2.0)</td><td>Jediná téma v obchode, bez zálohy. Aktualizácie Dawn sa nedajú stiahnuť automaticky.</td><td>Pred každou úpravou kódu: Online Store → Themes → Duplicate. Uchovať kópiu aj v GitHub repozitári.</td></tr>
+<tr><td>Gelato: Print on Demand</td><td>Spravuje 9 profilov dopravy a stav produktov. Zmena v Gelato môže prepísať ceny alebo zóny.</td><td>Po každej synchronizácii skontrolovať Settings → Shipping a 3 skúšobné košíky.</td></tr>
+<tr><td>Translate &amp; Adapt + „RC prints preklady“</td><td>Dva zdroje prekladov. Pri úprave textu v DE môže EN ostať staré (outdated).</td><td>Po zmene textu kontrolovať EN; dnes je 0 zastaraných.</td></tr>
+<tr><td>Lovable</td><td>Prístup do obchodu z externého nástroja; pri generovaní kódu môže zmeniť tému.</td><td>Ak sa nepoužíva, odinštalovať; inak obmedziť práva.</td></tr>
+<tr><td>Shopify Claude Connector, Flow, Order Printer Pro, Swiss Post Labels, Messaging</td><td>Nízke. Na storefronte nepridávajú skripty.</td><td>Bez zmeny.</td></tr>
+<tr><td>Google &amp; YouTube kanál (pixel GT-KFN9MG9M)</td><td>Meranie bez viditeľného súhlasu.</td><td>Viď F15.</td></tr>
+</table>
+</div></section>
+
+<section id="prilohy"><div class="wrap">
+<h2>11. Slovník pre začiatočníkov</h2>
+<dl class="glos">
+<dt>CRO</dt><dd>Conversion Rate Optimization – zvyšovanie podielu návštevníkov, ktorí nakúpia.</dd>
+<dt>PDP</dt><dd>Product Detail Page – stránka jedného produktu.</dd>
+<dt>Kolekcia</dt><dd>Zoznam produktov podľa pravidla (napr. tag = original) alebo ručne. Ulička v obchode.</dd>
+<dt>Tag-URL</dt><dd>Adresa typu /collections/all/werk – Shopify ňou filtruje produkty podľa štítku. Nie je to plnohodnotná kolekcia.</dd>
+<dt>LCP</dt><dd>Largest Contentful Paint – čas, kým sa ukáže najväčší prvok stránky. Dobré je do 2,5 s.</dd>
+<dt>CLS</dt><dd>Cumulative Layout Shift – koľko stránka „poskočí“ počas načítania. Dobré je do 0,1.</dd>
+<dt>Core Web Vitals</dt><dd>Tri Google metriky rýchlosti a stability (LCP, CLS, INP). Ovplyvňujú poradie vo vyhľadávaní.</dd>
+<dt>Liquid</dt><dd>Šablónovací jazyk Shopify tém. Upravuje ho vývojár.</dd>
+<dt>Theme editor / Customize</dt><dd>Vizuálny editor témy v Shopify admin. Bez kódu, bezpečné pre majiteľa.</dd>
+<dt>App embed</dt><dd>Kúsok aplikácie vložený do témy (napr. chat). Zapína sa v Theme editore → App embeds.</dd>
+<dt>Pixel</dt><dd>Merací skript (Google, Meta). V Shopify beží cez „Customer events“.</dd>
+<dt>Consent / cookie lišta</dt><dd>Súhlas návštevníka s meraním. V Shopify: Settings → Customer privacy.</dd>
+<dt>Checkout extensibility</dt><dd>Nová pokladňa Shopify, kde sa doplnky nastavujú v editore pokladne, nie kódom.</dd>
+<dt>Canonical</dt><dd>Značka v HTML, ktorá Googlu hovorí, ktorá z podobných stránok je „tá pravá“.</dd>
+<dt>Hreflang</dt><dd>Značka, ktorá Googlu hovorí, že /en/ je anglická verzia tej istej stránky.</dd>
+<dt>JSON-LD / štruktúrované dáta</dt><dd>Strojový popis produktu (cena, dostupnosť) pre Google. Obchod ho má.</dd>
+<dt>Delivery profile</dt><dd>Skupina produktov s vlastnými sadzbami dopravy. Gelato si vytvára svoje.</dd>
+<dt>Draft</dt><dd>Stav produktu „koncept“ – existuje v admine, ale zákazník ho nevidí (dostane 404).</dd>
+</dl>
+
+<h2 style="margin-top:40px">12. Príloha dôkazov</h2>
+<p class="lead">Snímky opísané slovami, presné adresy a namerané hodnoty. Snímky PNG sú uložené v repozitári (audit/shots/).</p>
+<table>
+<tr><th>Stránka</th><th>Mobil: LCP / CLS / prenos</th><th>Desktop: LCP / CLS / prenos</th><th>Čo vidno na snímke</th></tr>
+<tr><td>/ (domov)</td><td>2,2 s / 0 / 3125 KB, 231 req.</td><td>1,5 s / 0,079 / 2811 KB</td><td>Pop-up cez hero po 6 s; pod ním hero s „Originale ansehen“, „ab CHF 249.00“; kategórie; A3/A4; malé formáty; sety; „Mehr als Blätter“; postup; newsletter; ikony platieb bez TWINT.</td></tr>
+<tr><td>/en (domov EN)</td><td>1,4 s / 0 / 3120 KB</td><td>1,4 s / 0,045 / 2806 KB</td><td>Kompletný preklad, rovnaká štruktúra.</td></tr>
+<tr><td>/collections/alle-werke</td><td>1,9 s / 0 / 1582 KB, 236 req.</td><td>1,5 s / 0,079 / 1540 KB</td><td>„Alle Werke · 32 Artikel“, popis, triedenie, mriežka 2 (mobil) / 4 (desktop) s rámovanými listami, ceny „Von CHF 249.00“. Pop-up.</td></tr>
+<tr><td>/collections/wear-carry (+ ?page=2)</td><td>1,6 s / 0,051 / 1488 KB</td><td>1,5 s / 0,074 / 1434 KB</td><td>„97 Artikel“, filtre Alle / T-Shirts / Taschen / Hoodies / Stay hydrated, stránkovanie.</td></tr>
+<tr><td>/products/tshirt-cat</td><td>1,8 s / 0 / 1555 KB, 67 img</td><td>1,8 s / 0,079 / 1952 KB</td><td>Galéria „1 / von 25“, banner „Kein Original“, CHF 39.00, Schnitt/Farbe/Grösse pills (dámske farby prečiarknuté), sticky ATC, cross-sell 4 formáty, bez tabuľky veľkostí.</td></tr>
+<tr><td>/products/original-f-ladder</td><td>1,6 s / 0 / 1495 KB</td><td>1,6 s / 0,079 / 1514 KB</td><td>1 fotka, CHF 390, porovnanie „Original vs. Leinwand“, výborný text o papieri, náklade 45, certifikáte.</td></tr>
+<tr><td>/products/set-nach-wahl</td><td>7,5 s / 0,142 / 1854 KB, 21 oversized</td><td>1,0 s / 0,053 / 1712 KB</td><td>Výber motívov 1–2–3 v rámiku, „0 / 3 gewählt“, pop-up cez výber.</td></tr>
+<tr><td>/products/geschenkgutschein</td><td>1,8 s / 0 / 1333 KB</td><td>2,3 s / 0,079 / 1250 KB</td><td>„Zustellung: Per E-Mail · Gedruckte Karte per Post CHF 3 Versand“ (→ 404), sumy 50–200, formulár darčeka.</td></tr>
+<tr><td>/cart (prázdny)</td><td>7,2 s / 0 / 1364 KB</td><td>1,0 s / 0,079 / 1241 KB</td><td>„Dein Warenkorb ist leer“, pop-up aj tu.</td></tr>
+<tr><td>/search?q=katze</td><td>1,5 s / 0 / 1388 KB</td><td>1,4 s / 0,079 / 1264 KB</td><td>8 výsledkov, filtre Verfügbarkeit, Preis, triedenie.</td></tr>
+<tr><td>/pages/contact</td><td>7,3 s / 0 / 1289 KB</td><td>1,0 s / 0,079 / 1166 KB</td><td>„Schreib mir…“, info@rcprints.ch, formulár. Pop-up.</td></tr>
+<tr><td>/pages/linolschnitt-aus-bern</td><td>3,3 s / 0,027 / 1289 KB</td><td>—</td><td>Vysvetlenie techniky, „Was es gibt“, FAQ (originál vs. reprodukcia, odkiaľ sa posiela, doprava).</td></tr>
+<tr><td>/toto-neexistuje (404)</td><td>7,2 s / 0 / 1288 KB</td><td>1,0 s / 0,079 / 1165 KB</td><td>Iba „404 – Seite nicht gefunden – Weiter shoppen“.</td></tr>
+</table>
+<h3>Ďalšie namerané fakty</h3>
+<ul class="small">
+<li>robots.txt: štandard Shopify, povoľuje crawl; sitemap.xml: produkty (188 URL), stránky (2), kolekcie (13), blog (0), + EN verzie. llms.txt a agents.md prítomné (Shopify štandard). /.well-known/security.txt: 404.</li>
+<li>HTTP hlavičky: HSTS max-age 7889238, CSP block-all-mixed-content, X-Frame-Options DENY, X-Content-Type-Options nosniff, Cloudflare. HTTP → 301 HTTPS.</li>
+<li>Admin API: plán Basic, mena CHF, Europe/Zurich, taxesIncluded true, jediný trh Switzerland (de, en), 1 téma (MAIN), 9 aplikácií, 2 stránky, 1 blog bez článkov, 16 kolekcií (13 verejných), 187 aktívnych produktov (13 typov), 0 bez SEO titulku/popisu, 0 bez kategórie, 89 s ≤1 médiom, 9 s evidovaným skladom (originály).</li>
+<li>Skúšobné košíky (Bern 3007): tričko → CHF 12; tričko + originál (CHF 429) → 0; pohľadnice → CHF 5 aj CHF 12 (dve možnosti); originál → 0.</li>
+<li>Menu (Navigation API): main-menu 10 položiek, footer 1 položka (Search), customer-account 2.</li>
+<li>Kontrola alt textov: 28 tričiek × 36 fotiek + 20 plátien × 2 = 1048 fotiek, všetky s alt DE aj EN, 0 zastaraných prekladov (z auditu z toho istého dňa).</li>
+</ul>
+<h3>Obmedzenia auditu</h3>
+<ul class="small">
+<li>Marketingový web rcprints.ch nebol dostupný (sieťová politika). Skóre webu a kombinované skóre sú preto neúplné.</li>
+<li>Pokladňa bola pozorovaná len z verejných dát (ikony platieb, sadzby dopravy cez API košíka). Samotné kroky pokladne som neprechádzal.</li>
+<li>Časy sú laboratórne, merané z USA cez proxy; Google Fonts boli v prostredí blokované, takže reálne LCP môže byť o 100–300 ms iné.</li>
+<li>Kontrast farieb a klávesová navigácia neboli merané nástrojom.</li>
+<li>Právne posúdenia neposkytujem; body označené „právnik“ treba overiť.</li>
+</ul>
+<p class="small" style="margin-top:24px">Vypracované 25. 9. 2026 na základe verejného obchodu a Shopify Admin API. Ďalšia verzia po sprístupnení webu.</p>
+</div></section>
+
+<script>
+(function(){var bs=document.querySelectorAll('.filters button'),cards=document.querySelectorAll('#cards .card');bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.classList.remove('on')});b.classList.add('on');var f=b.getAttribute('data-f');cards.forEach(function(c){c.style.display=(f==='all'||(c.getAttribute('data-sev')||'').split(' ').indexOf(f)>-1)?'':'none'})})})})();
+</script>
+</body>
+</html>

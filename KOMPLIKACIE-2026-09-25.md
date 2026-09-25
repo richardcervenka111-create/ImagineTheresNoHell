@@ -45,3 +45,9 @@ Označenie: ZMERANÉ = overené príkazom/dotazom, POSÚDENÉ = môj úsudok bez
 - Stiahnutie 1048 fotiek skriptom `05_Fotky-eshop-2026-09-14/stiahni-fotky-2026-09-24.command` a overenie počtov (1008 + 40).
 - Kontrola živého obchodu v skutočnom prehliadači (rozloženie, načítanie obrázkov) – HTML a alt texty som overil z cloudu o 13:15 (#937), vizuálne vykreslenie nie.
 - Pripojenie tohto denníka k KOMPLIKACIE-2026-09-11.md.
+
+## #942 – Audit obchodu a webu: marketingový web rcprints.ch nedostupný (15:40–16:20)
+- Čo: pri audite (zadanie „principal digital commerce auditor“) proxy prostredia blokovala rcprints.ch a www.rcprints.ch (403 CONNECT). DNS domény ukazuje na Cloudflare, web teda existuje. Shopify obchod bol dostupný cez curl a Chromium (Playwright), Google Fonts blokované.
+- Riešenie: obchod auditovaný kompletne (60 stránok HTML, 26 vykreslení mobil/desktop, 187 produktov cez Admin API, 4 skúšobné košíky). Web označený ako „neauditované“, skóre webu nevyplnené. Report: `audit/audit-shopify-web-rcprints-2026-09-25.html`, snímky v `audit/shots/`.
+- Čaká: povoliť domény rcprints.ch, www.rcprints.ch, fonts.googleapis.com v Network access prostredia a spustiť doaudit webu (cca 45 min).
+- Kritické nálezy zapísané v reporte: F01 poukaz „Gedruckte Karte“ → 404 (produkt v Draft), F02 TWINT sľúbený, v ikonách chýba, F04 dve sadzby dopravy pri pohľadniciach (ZMERANÉ cez /cart/shipping_rates.json).
