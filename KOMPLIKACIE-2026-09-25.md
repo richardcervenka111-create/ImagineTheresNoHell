@@ -1,6 +1,6 @@
 # Komplikácie a riešenia – 25. 9. 2026 (kontrola fotiek, alt textov a variant v Shopify)
 
-Pokračovanie denníka KOMPLIKACIE-2026-09-11.md z Macu (posledné číslo #936). Časy sú (Bern =+2).
+Pokračovanie denníka KOMPLIKACIE-2026-09-11.md z Macu (posledné číslo #936). Časy sú v bernskom čase (CEST, UTC+2).
 Označenie: ZMERANÉ = overené príkazom/dotazom, POSÚDENÉ = môj úsudok bez merania.
 
 ## #937 – Živý obchod shop.rcprints.ch sa z cloudu nedá otvoriť (13:03)
