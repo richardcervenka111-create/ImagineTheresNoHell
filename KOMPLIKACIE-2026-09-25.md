@@ -7,6 +7,8 @@ Označenie: ZMERANÉ = overené príkazom/dotazom, POSÚDENÉ = môj úsudok bez
 - Čo: WebFetch aj curl na shop.rcprints.ch a cdn.shopify.com vracajú „blocked by the network egress proxy“ (HTTP 403 z proxy). Sieťová politika prostredia Claude Code doménu nepovoľuje.
 - Riešenie: vizuálnu kontrolu nahradila kontrola cez Admin API (produkt má `onlineStoreUrl`, stav ACTIVE, fotky READY, alt DE aj EN). Skutočné zobrazenie na webe treba overiť z telefónu alebo Macu – **čaká na Mac / telefón**.
 - ZMERANÉ 11:07 UTC (dotaz `products(query:"handle:...")`): Wellen, Die Kuppeln, Grammophone, Garnele (tričká) aj plátno Katze sú ACTIVE, majú `onlineStoreUrl` na shop.rcprints.ch a titulnú fotku s novým alt textom – teda v obchode sú zverejnené s novými fotkami.
+- Dodatok 11:13–11:15 UTC: pri druhom pokuse (`curl -sS https://shop.rcprints.ch/products/...`) obchod odpovedal HTTP 200 (WebFetch ostal blokovaný). ZMERANÉ zo stiahnutého HTML: Wellen, Die Kuppeln, Grammophone, Garnele majú v galérii 36 fotiek s novými DE alt textami (prvá „T-Shirt aus Bio-Baumwolle … Weiss, Herrenschnitt“), selektor zobrazuje Herren, Damen; Weiss … Marineblau; S, M, L, XL, XXL, XS. Plátno Katze: 2 fotky, Vorderansicht prvá, Seitenansicht druhá. Anglická stránka /en/products/tshirt-waves má EN alt texty („Organic cotton T-shirt with the linocut “Waves” – white, men’s cut“) a EN hodnoty možností (Men, Women, White …).
+- Pozor: Shopify pri rýchlych požiadavkách vracia HTTP 429 (rate limit); pomohla pauza 8–20 s medzi stránkami.
 - Ak má kontrola z cloudu fungovať nabudúce: v nastaveniach prostredia (Network access) pridať shop.rcprints.ch a cdn.shopify.com medzi povolené domény.
 
 ## #938 – Poradie variant: postihnuté 4 tričká, nie 3 (11:01 UTC)
@@ -40,5 +42,5 @@ Označenie: ZMERANÉ = overené príkazom/dotazom, POSÚDENÉ = môj úsudok bez
 
 ## Čaká na Mac (nerobené)
 - Stiahnutie 1048 fotiek skriptom `05_Fotky-eshop-2026-09-14/stiahni-fotky-2026-09-24.command` a overenie počtov (1008 + 40).
-- Vizuálna kontrola živého obchodu (Wellen, Die Kuppeln, Grammophone, Garnele, plátno Katze) v prehliadači – z cloudu zablokované (#937).
+- Kontrola živého obchodu v skutočnom prehliadači (rozloženie, načítanie obrázkov) – HTML a alt texty som overil z cloudu o 11:15 UTC (#937), vizuálne vykreslenie nie.
 - Pripojenie tohto denníka k KOMPLIKACIE-2026-09-11.md.
